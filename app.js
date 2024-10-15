@@ -140,3 +140,34 @@ if ('serviceWorker' in navigator) {
             console.log('ServiceWorker registrering misslyckades:', error);
         });
 }
+const resetButton = document.getElementById('reset-button');
+
+// Funktion för att nollställa låtönskningar
+function resetRequests() {
+    if (confirm("Är du säker på att du vill nollställa alla låtönskningar? Detta kan inte ångras.")) {
+        requests = []; // Rensa listan med önskningar
+        voteHistory = {}; // Rensa rösthistoriken
+        saveData(); // Spara ändringarna till lokal lagring
+        updateRequestsList(); // Uppdatera gränssnittet
+        alert("Låtönskningarna har nollställts.");
+    }
+}
+
+// Visa nollställningsknappen endast för DJ:n efter inloggning
+djLoginButton.addEventListener('click', () => {
+    const password = djPasswordInput.value;
+    const correctPassword = 'dj123'; // Byt ut detta till ett säkrare lösenord
+
+    if (password === correctPassword) {
+        isDJ = true;
+        djModal.style.display = 'none';
+        djError.textContent = '';
+        updateRequestsList();
+        resetButton.style.display = 'block'; // Visa nollställningsknappen efter inloggning
+    } else {
+        djError.textContent = 'Fel lösenord, försök igen!';
+    }
+});
+
+// Koppla nollställningsfunktionen till knappen
+resetButton.addEventListener('click', resetRequests);

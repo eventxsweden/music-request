@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <title>Bröllopets Låtönskningar</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Önska en Låt</h1>
+        <form id="request-form">
+            <input type="text" id="artist-input" placeholder="Skriv artist/band" required>
+            <input type="text" id="song-input" placeholder="Skriv låttitel" required>
+            <button type="submit">Önska</button>
+        </form>
+
+        <label for="filter">Filtrera på antal röster:</label>
+        <select id="filter">
+            <option value="all">Alla låtar</option>
+            <option value="1">1 röst</option>
+            <option value="2">2 röster</option>
+            <option value="3">3 röster</option>
+            <option value="more">Fler än 3 röster</option>
+        </select>
+
+        <button id="dj-mode-button">DJ-läge</button>
+
+        <ul id="requests-list"></ul>
+    </div>
+
+    <!-- Inloggningsmodal för DJ -->
+    <div id="dj-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>DJ Inloggning</h2>
+            <input type="password" id="dj-password" placeholder="Ange lösenord">
+            <button id="dj-login-button">Logga in</button>
+            <p id="dj-error" class="error-message"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <a href="https://www.eventx.nu/" target="_blank" rel="noopener noreferrer">Besök EventX</a>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

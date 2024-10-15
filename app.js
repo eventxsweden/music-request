@@ -1,3 +1,4 @@
+// Hämta element från DOM
 const form = document.getElementById('request-form');
 const artistInput = document.getElementById('artist-input');
 const songInput = document.getElementById('song-input');
@@ -21,7 +22,7 @@ function saveData() {
     localStorage.setItem('voteHistory', JSON.stringify(voteHistory));
 }
 
-// Hantera formulärinlämning
+// Hantera formulärinlämning för låtönskningar
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     const artist = artistInput.value.trim();
@@ -120,4 +121,39 @@ djLoginButton.addEventListener('click', () => {
     const password = djPasswordInput.value;
     const correctPassword = 'dj123'; // Byt ut detta till ett säkrare lösenord
 
-    if
+    if (password === correctPassword) {
+        isDJ = true;
+        djModal.style.display = 'none';
+        djError.textContent = '';
+        updateRequestsList();
+        resetButton.style.display = 'block'; // Visa nollställningsknappen efter inloggning
+    } else {
+        djError.textContent = 'Fel lösenord, försök igen!';
+    }
+});
+
+// Koppla nollställningsfunktionen till knappen
+resetButton.addEventListener('click', resetRequests);
+
+// Stäng modalen om användaren klickar utanför den
+window.addEventListener('click', (event) => {
+    if (event.target == djModal) {
+        djModal.style.display = 'none';
+        djError.textContent = '';
+        djPasswordInput.value = '';
+    }
+});
+
+// Initial uppdatering av listan
+updateRequestsList();
+
+// Registrera service worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+        .then((registration) => {
+            console.log('ServiceWorker registrerad:', registration);
+        })
+        .catch((error) => {
+            console.log('ServiceWorker registrering misslyckades:', error);
+        });
+}

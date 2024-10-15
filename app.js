@@ -9,10 +9,11 @@ const closeButton = document.querySelector('.close-button');
 const djLoginButton = document.getElementById('dj-login-button');
 const djPasswordInput = document.getElementById('dj-password');
 const djError = document.getElementById('dj-error');
+const resetButton = document.getElementById('reset-button');
 
 let requests = JSON.parse(localStorage.getItem('requests')) || [];
 let voteHistory = JSON.parse(localStorage.getItem('voteHistory')) || {};
-let isDJ = false; // Flag för att hålla reda på om DJ-läge är aktivt
+let isDJ = false; // Flagga för att hålla reda på om DJ-läge är aktivt
 
 // Funktion för att spara data till lokal lagring
 function saveData() {
@@ -88,6 +89,17 @@ function markAsPlayed(index) {
     updateRequestsList();
 }
 
+// Nollställ låtönskningar
+function resetRequests() {
+    if (confirm("Är du säker på att du vill nollställa alla låtönskningar? Detta kan inte ångras.")) {
+        requests = []; // Rensa listan med önskningar
+        voteHistory = {}; // Rensa rösthistoriken
+        saveData(); // Spara ändringarna till lokal lagring
+        updateRequestsList(); // Uppdatera gränssnittet
+        alert("Låtönskningarna har nollställts.");
+    }
+}
+
 // Hantera förändringar i filtreringsmenyn
 filter.addEventListener('change', updateRequestsList);
 
@@ -108,66 +120,4 @@ djLoginButton.addEventListener('click', () => {
     const password = djPasswordInput.value;
     const correctPassword = 'dj123'; // Byt ut detta till ett säkrare lösenord
 
-    if (password === correctPassword) {
-        isDJ = true;
-        djModal.style.display = 'none';
-        djError.textContent = '';
-        updateRequestsList();
-    } else {
-        djError.textContent = 'Fel lösenord, försök igen!';
-    }
-});
-
-// Stäng modalen om användaren klickar utanför den
-window.addEventListener('click', (event) => {
-    if (event.target == djModal) {
-        djModal.style.display = 'none';
-        djError.textContent = '';
-        djPasswordInput.value = '';
-    }
-});
-
-// Initial uppdatering av listan
-updateRequestsList();
-
-// Registrera service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-        .then((registration) => {
-            console.log('ServiceWorker registrerad:', registration);
-        })
-        .catch((error) => {
-            console.log('ServiceWorker registrering misslyckades:', error);
-        });
-}
-const resetButton = document.getElementById('reset-button');
-
-// Funktion för att nollställa låtönskningar
-function resetRequests() {
-    if (confirm("Är du säker på att du vill nollställa alla låtönskningar? Detta kan inte ångras.")) {
-        requests = []; // Rensa listan med önskningar
-        voteHistory = {}; // Rensa rösthistoriken
-        saveData(); // Spara ändringarna till lokal lagring
-        updateRequestsList(); // Uppdatera gränssnittet
-        alert("Låtönskningarna har nollställts.");
-    }
-}
-
-// Visa nollställningsknappen endast för DJ:n efter inloggning
-djLoginButton.addEventListener('click', () => {
-    const password = djPasswordInput.value;
-    const correctPassword = 'dj123'; // Byt ut detta till ett säkrare lösenord
-
-    if (password === correctPassword) {
-        isDJ = true;
-        djModal.style.display = 'none';
-        djError.textContent = '';
-        updateRequestsList();
-        resetButton.style.display = 'block'; // Visa nollställningsknappen efter inloggning
-    } else {
-        djError.textContent = 'Fel lösenord, försök igen!';
-    }
-});
-
-// Koppla nollställningsfunktionen till knappen
-resetButton.addEventListener('click', resetRequests);
+    if
